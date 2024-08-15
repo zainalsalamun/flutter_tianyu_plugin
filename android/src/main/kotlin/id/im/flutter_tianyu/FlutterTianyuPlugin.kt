@@ -162,9 +162,16 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
 
+            "displayTextOnScreen" -> {
+                val a = deviceApi.displayTextOnScreen(call.arguments as String, 5);
+                result.success(a)
+            }
+
             else -> {
                 result.notImplemented()
             }
+
+
         }
 
     }

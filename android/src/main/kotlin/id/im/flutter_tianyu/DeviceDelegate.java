@@ -106,4 +106,5 @@ public class DeviceDelegate implements IDeviceDelegate {
         handler.post(() ->channel.invokeMethod("onGetPinBlock", data));
     }
 
+
 }
