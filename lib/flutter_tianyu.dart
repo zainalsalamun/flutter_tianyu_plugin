@@ -27,16 +27,18 @@ class FlutterTianyu {
     this.onWaitingcard,
   }) {
     FlutterTianyuPlatform.instance.onDisconnectedDevice = onDisconnectedDevice;
-    FlutterTianyuPlatform.instance.onConnectedDevice=onConnectedDevice;
-    FlutterTianyuPlatform.instance.onUpdateWorkingKey=onUpdateWorkingKey;
-    FlutterTianyuPlatform.instance.onSelectICApplication=onSelectICApplication;
-    FlutterTianyuPlatform.instance.onReadCard=onReadCard;
-    FlutterTianyuPlatform.instance.onReadCardData=onReadCardData;
-    FlutterTianyuPlatform.instance.onDownGradeTransaction=onDownGradeTransaction;
-    FlutterTianyuPlatform.instance.onGetMacWithMKIndex=onGetMacWithMKIndex;
-    FlutterTianyuPlatform.instance.onPinBlockEntered=onPinBlockEntered;
-    FlutterTianyuPlatform.instance.onGetPinBlock=onGetPinBlock;
-    FlutterTianyuPlatform.instance.onWaitingcard=onWaitingcard;
+    FlutterTianyuPlatform.instance.onConnectedDevice = onConnectedDevice;
+    FlutterTianyuPlatform.instance.onUpdateWorkingKey = onUpdateWorkingKey;
+    FlutterTianyuPlatform.instance.onSelectICApplication =
+        onSelectICApplication;
+    FlutterTianyuPlatform.instance.onReadCard = onReadCard;
+    FlutterTianyuPlatform.instance.onReadCardData = onReadCardData;
+    FlutterTianyuPlatform.instance.onDownGradeTransaction =
+        onDownGradeTransaction;
+    FlutterTianyuPlatform.instance.onGetMacWithMKIndex = onGetMacWithMKIndex;
+    FlutterTianyuPlatform.instance.onPinBlockEntered = onPinBlockEntered;
+    FlutterTianyuPlatform.instance.onGetPinBlock = onGetPinBlock;
+    FlutterTianyuPlatform.instance.onWaitingcard = onWaitingcard;
   }
 
   Future<String?> getPlatformVersion() {
@@ -63,18 +65,25 @@ class FlutterTianyu {
     return FlutterTianyuPlatform.instance.getVersion();
   }
 
+  Future<String> getDeviceInfo() {
+    return FlutterTianyuPlatform.instance.getDeviceInfo();
+  }
+
   Future<void> cancel() {
     return FlutterTianyuPlatform.instance.cancel();
   }
-  
 
   Future<Map<Object?, Object?>> readCardWithTradeData(
       {required int amount, bool showPinInputStatus = true}) {
-    return FlutterTianyuPlatform.instance
-        .readCardWithTradeData(amount: amount, showPinInputStatus: showPinInputStatus);
+    return FlutterTianyuPlatform.instance.readCardWithTradeData(
+        amount: amount, showPinInputStatus: showPinInputStatus);
   }
 
   Future<bool> confirmTransaction({String str = "Transaction Approved"}) {
     return FlutterTianyuPlatform.instance.confirmTransaction(str: str);
+  }
+
+  Future<bool> displayTextOnScreen({ String str = "Test Display Text On Screen"}) {
+    return FlutterTianyuPlatform.instance.displayTextOnScreen(str: str);
   }
 }

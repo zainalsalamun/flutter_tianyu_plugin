@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   late final FlutterTianyu _flutterTianyuPlugin;
 
   String _platformVersion = 'Unknown';
+
   bool _innitialized = false;
 
   bool _initialized = false;
@@ -183,6 +184,8 @@ class _MyAppState extends State<MyApp> {
                     child: const Text('Confirm Transaction')),
                 ElevatedButton(
                     onPressed: _clearLogs, child: const Text('Clear logs')),
+                ElevatedButton(onPressed: _displayTextOnScreen, child: const Text('Display text on screen')),
+                ElevatedButton(onPressed: _getDeviceInfo, child: const Text('GetDeviceVerion')),
                 Visibility(
                     visible: _isProcessing,
                     child: const LinearProgressIndicator()),
@@ -303,13 +306,12 @@ class _MyAppState extends State<MyApp> {
       });
     }
     await _flutterTianyuPlugin.connectDevice(btAddress: "A2:E7:5A:BA:80:4C");
-    // await _flutterTianyuPlugin.connectDevice(btAddress: btAddress);
+    //await _flutterTianyuPlugin.connectDevice(btAddress: btAddress);
   }
 
   void _disconnectDevice() async {
     final cek = await _flutterTianyuPlugin.isConnected();
     if (!cek) {
-      /// device tidak connect
       if (mounted) {
         setState(() {
           _isProcessing = false;
@@ -346,17 +348,19 @@ class _MyAppState extends State<MyApp> {
 
     try {
       await _flutterTianyuPlugin.readCardWithTradeData(
-          amount: 10000, showPinInputStatus: showPinInput);
+          amount: 5, showPinInputStatus: showPinInput);
 
       if (mounted) {
         setState(() {
           _tianyuLogs += "\nRead Card Success";
+          print(_tianyuLogs);
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _tianyuLogs += "\nRead Card Failed";
+          print(_tianyuLogs);
         });
       }
     }
@@ -393,7 +397,12 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _cancelTransaction() {
+  void _cancelTransaction() async {
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+
     if (mounted) {
       setState(() {
         _isProcessing = true;
@@ -412,7 +421,6 @@ class _MyAppState extends State<MyApp> {
     List<BluetoothDevice> devicesList = [];
     Map<String, BluetoothDevice> devicesMap = {};
 
-    // Mulai scan untuk perangkat Bluetooth
     FlutterBluePlus.scanResults.listen((results) {
       for (ScanResult result in results) {
         if (!devicesMap.containsKey(result.device.id.toString())) {
@@ -420,35 +428,27 @@ class _MyAppState extends State<MyApp> {
           devicesMap[result.device.id.toString()] = result.device;
         }
       }
+      setState(() {
+        _devicesList = devicesList;
+      });
     });
 
-    // Mulai scanning dengan durasi 10 detik
-    FlutterBluePlus.startScan(timeout: Duration(seconds: 10));
+    await FlutterBluePlus.startScan(timeout: Duration(seconds: 10));
 
-    // Tunggu hingga scanning selesai
-    await Future.delayed(Duration(seconds: 10));
+    await FlutterBluePlus.stopScan();
 
-    // Hentikan scanning
-    FlutterBluePlus.stopScan();
-
-    // Tampilkan daftar perangkat yang ditemukan
     print('Devices found:');
     for (int i = 0; i < devicesList.length; i++) {
       print('${i + 1}. ${devicesList[i].name} (${devicesList[i].id})');
     }
 
-    // Pilih perangkat yang ingin dihubungkan (misalnya, perangkat pertama dalam daftar)
     if (devicesList.isNotEmpty) {
       BluetoothDevice selectedDevice = devicesList[0];
       String btAddress = selectedDevice.id.toString();
       print('Selected device: $btAddress');
 
-      // Koneksikan ke perangkat yang dipilih
       await selectedDevice.connect();
       print('Connected to $btAddress');
-
-      // Jangan lupa untuk disconnect setelah selesai menggunakan
-      // await selectedDevice.disconnect();
     } else {
       print('No devices found.');
     }
@@ -465,13 +465,44 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    // Mulai scanning dengan durasi 10 detik
     FlutterBluePlus.startScan(timeout: Duration(seconds: 10));
 
-    // Tunggu hingga scanning selesai
     await Future.delayed(Duration(seconds: 10));
 
-    // Hentikan scanning
     FlutterBluePlus.stopScan();
+  }
+
+  void _displayTextOnScreen() async{
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+
+    if (mounted) {
+      setState(() {
+        _isProcessing = true;
+        _tianyuLogs += "\nTest Display Text On Screen";
+      });
+    }
+    await _flutterTianyuPlugin.displayTextOnScreen(str: "hello");
+    if (mounted) {
+      setState(() {
+        _isProcessing = false;
+      });
+
+      return;
+    }
+  }
+
+  void _getDeviceInfo() async  {
+
+    String version = await _flutterTianyuPlugin.getDeviceInfo();
+    print(version);
+    if (mounted) {
+      setState(() {
+        _isProcessing = false;
+        _tianyuLogs += "\nVersion: $version";
+      });
+    }
   }
 }

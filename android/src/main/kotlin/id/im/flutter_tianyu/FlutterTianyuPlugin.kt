@@ -163,8 +163,13 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             "displayTextOnScreen" -> {
-                val a = deviceApi.displayTextOnScreen(call.arguments as String, 5);
-                result.success(a)
+                val display = deviceApi.displayTextOnScreen(call.arguments as String, 20);
+                result.success(display)
+            }
+
+            "getDeviceInfo" -> {
+                val deviceInfo = deviceApi.getDeviceVersion()
+                result.success(deviceInfo)
             }
 
             else -> {

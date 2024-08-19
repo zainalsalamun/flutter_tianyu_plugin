@@ -15,7 +15,8 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
 
@@ -26,7 +27,15 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
 
   @override
   Future<bool> confirmTransaction({String str = "Transaction Approved"}) async {
-    final result = await methodChannel.invokeMethod<bool>('confirmTransaction', str);
+    final result =
+        await methodChannel.invokeMethod<bool>('confirmTransaction', str);
+    return result ?? false;
+  }
+
+  Future<bool> displayTextOnScreen(
+      {String str = "Display Text On Screen"}) async {
+    final result =
+        await methodChannel.invokeMethod<bool>("displayTextOnScreen", str);
     return result ?? false;
   }
 
@@ -43,6 +52,12 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
   @override
   Future<String> getVersion() async {
     final result = await methodChannel.invokeMethod<String>("getVersion");
+    return result ?? "";
+  }
+
+  @override
+  Future<String> getDeviceInfo() async {
+    final result = await methodChannel.invokeMethod<String>("getDeviceInfo");
     return result ?? "";
   }
 
@@ -79,7 +94,7 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
       case "onDisconnectedDevice":
         {
           // debugPrint("channel onDisconnectedDevice");
-          onDisconnectedDevice?.call(isSuccess: call.arguments );
+          onDisconnectedDevice?.call(isSuccess: call.arguments);
           break;
         }
       case "onUpdateWorkingKey":
@@ -96,17 +111,17 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
       case "onReadCardData":
         {
           debugPrint("channel onReadCardData ${call.arguments}");
-          onReadCardData?.call(data: call.arguments );
+          onReadCardData?.call(data: call.arguments);
           break;
         }
       case "onDownGradeTransaction":
         {
-          onDownGradeTransaction?.call(data: call.arguments );
+          onDownGradeTransaction?.call(data: call.arguments);
           break;
         }
       case "onGetMacWithMKIndex":
         {
-          onGetMacWithMKIndex?.call(data: call.arguments );
+          onGetMacWithMKIndex?.call(data: call.arguments);
           break;
         }
       case "onSelectICApplication":

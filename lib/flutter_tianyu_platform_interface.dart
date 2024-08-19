@@ -44,7 +44,10 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
   Future<void> disconnectDevice();
   Future<bool> isConnected();
   Future<String> getVersion();
+  Future<String> getDeviceInfo();
   Future<void> cancel();
-  Future<Map<Object?, Object?>> readCardWithTradeData({required int amount, bool showPinInputStatus});
+  Future<Map<Object?, Object?>> readCardWithTradeData(
+      {required int amount, bool showPinInputStatus});
   Future<bool> confirmTransaction({String str = "Transaction Approved"});
+  Future<bool> displayTextOnScreen({ String str = "Test Display Text On Screen"});
 }

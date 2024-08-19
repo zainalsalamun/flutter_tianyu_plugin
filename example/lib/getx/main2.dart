@@ -1,0 +1,76 @@
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'tianyu_controller.dart';
+//
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetMaterialApp(
+//       home: TianyuPage(),
+//     );
+//   }
+// }
+//
+// class TianyuPage extends StatelessWidget {
+//   final TianyuController controller = Get.put(TianyuController());
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Tianyu Plugin app'),
+//       ),
+//       body: Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: [
+//               Column(
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: [
+//                   Obx(() => Text('Running on: ${controller.platformVersion}\n')),
+//                 ],
+//               ),
+//               ElevatedButton(
+//                   onPressed: controller.searchBluetoothDevice,
+//                   child: const Text("Scan Device")),
+//               ElevatedButton(
+//                   onPressed: controller.connectTianyuDevice,
+//                   child: const Text("Connect Tianyu device")),
+//               ElevatedButton(
+//                   onPressed: controller.disconnectDevice,
+//                   child: const Text("Disconnect Tianyu device")),
+//               ElevatedButton(
+//                   onPressed: controller.readCard, child: const Text("Read card")),
+//               ElevatedButton(
+//                   onPressed: controller.cancelTransaction,
+//                   child: const Text('Cancel Transaction')),
+//               ElevatedButton(
+//                   onPressed: controller.confirmTransaction,
+//                   child: const Text('Confirm Transaction')),
+//               ElevatedButton(
+//                   onPressed: controller.clearLogs, child: const Text('Clear logs')),
+//               Obx(() => Visibility(
+//                   visible: controller.isProcessing.value,
+//                   child: const LinearProgressIndicator())),
+//             ],
+//           ),
+//           Expanded(
+//             child: SingleChildScrollView(
+//               padding: const EdgeInsets.all(16),
+//               child: Obx(() => Text(controller.tianyuLogs.value)),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
