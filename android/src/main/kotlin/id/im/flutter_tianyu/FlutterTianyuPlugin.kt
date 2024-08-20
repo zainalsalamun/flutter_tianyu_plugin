@@ -172,6 +172,11 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(deviceInfo)
             }
 
+            "cancel" -> {
+                deviceApi.cancel()
+                result.success(true)
+            }
+
             else -> {
                 result.notImplemented()
             }
