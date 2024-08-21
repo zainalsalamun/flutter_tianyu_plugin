@@ -83,7 +83,12 @@ class FlutterTianyu {
     return FlutterTianyuPlatform.instance.confirmTransaction(str: str);
   }
 
-  Future<bool> displayTextOnScreen({ String str = "Test Display Text On Screen"}) {
+  Future<bool> displayTextOnScreen(
+      {String str = "Test Display Text On Screen"}) {
     return FlutterTianyuPlatform.instance.displayTextOnScreen(str: str);
+  }
+
+  Future<bool> confirmTradeResponse({required String str}) {
+    return FlutterTianyuPlatform.instance.confirmTradeResponse(str: str);
   }
 }

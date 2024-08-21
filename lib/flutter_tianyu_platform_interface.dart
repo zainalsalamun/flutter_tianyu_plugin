@@ -49,5 +49,7 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
   Future<Map<Object?, Object?>> readCardWithTradeData(
       {required int amount, bool showPinInputStatus});
   Future<bool> confirmTransaction({String str = "Transaction Approved"});
-  Future<bool> displayTextOnScreen({ String str = "Test Display Text On Screen"});
+  Future<bool> displayTextOnScreen(
+      {String str = "Test Display Text On Screen"});
+  Future<bool> confirmTradeResponse({required String str});
 }

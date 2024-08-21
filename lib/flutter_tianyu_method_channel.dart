@@ -83,6 +83,12 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
     return result ?? {};
   }
 
+  Future<bool> confirmTradeResponse({required String str}) async {
+    final result =
+        await methodChannel.invokeMethod<String>("confirmTradeResponse", str);
+    return result ?? "";
+  }
+
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     switch (call.method) {
       case "onConnectedDevice":
