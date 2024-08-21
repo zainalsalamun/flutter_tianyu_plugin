@@ -178,8 +178,8 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             "confirmTradeResponse" -> {
-               val confirmTrandeResponse = deviceApi.confirmTradeResponse(call.arguments as String)
-                result.success(confirmTrandeResponse)
+                deviceApi.confirmTradeResponse(call.arguments as String)
+                result.success(true)
             }
 
             else -> {
