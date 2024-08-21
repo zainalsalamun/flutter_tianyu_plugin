@@ -153,51 +153,59 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Tianyu Plugin app'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Running on: $_platformVersion\n'),
-                  ],
-                ),
-                ElevatedButton(
-                    onPressed: _searchBluetoothDevice,
-                    child: const Text("Scan Device")),
-                ElevatedButton(
-                    onPressed: _connectTianyuDevice,
-                    child: const Text("Connect Tianyu device")),
-                ElevatedButton(
-                    onPressed: _disconnectDevice,
-                    child: const Text("Disconnect Tianyu device")),
-                ElevatedButton(
-                    onPressed: _readCard, child: const Text("Read card")),
-                ElevatedButton(
-                    onPressed: _cancelTransaction,
-                    child: const Text('Cancel Transaction')),
-                ElevatedButton(
-                    onPressed: _confirmTransaction,
-                    child: const Text('Confirm Transaction')),
-                ElevatedButton(
-                    onPressed: _clearLogs, child: const Text('Clear logs')),
-                ElevatedButton(onPressed: _displayTextOnScreen, child: const Text('Display text on screen')),
-                ElevatedButton(onPressed: _getDeviceInfo, child: const Text('GetDeviceVerion')),
-                Visibility(
-                    visible: _isProcessing,
-                    child: const LinearProgressIndicator()),
-              ],
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Text(_tianyuLogs),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Running on: $_platformVersion\n'),
+                    ],
+                  ),
+                  ElevatedButton(
+                      onPressed: _searchBluetoothDevice,
+                      child: const Text("Scan Device")),
+                  ElevatedButton(
+                      onPressed: _connectTianyuDevice,
+                      child: const Text("Connect Tianyu device")),
+                  ElevatedButton(
+                      onPressed: _disconnectDevice,
+                      child: const Text("Disconnect Tianyu device")),
+                  ElevatedButton(
+                      onPressed: _readCard, child: const Text("Read card")),
+                  ElevatedButton(
+                      onPressed: _cancelTransaction,
+                      child: const Text('Cancel Transaction')),
+                  ElevatedButton(
+                      onPressed: _confirmTransaction,
+                      child: const Text('Confirm Transaction')),
+                  ElevatedButton(
+                      onPressed: _clearLogs, child: const Text('Clear logs')),
+                  ElevatedButton(
+                      onPressed: _displayTextOnScreen,
+                      child: const Text('Display text on screen')),
+                  ElevatedButton(
+                      onPressed: _getDeviceInfo,
+                      child: const Text('GetDeviceVerion')),
+                  ElevatedButton(
+                      onPressed: _confirmTradeResponse,
+                      child: const Text('ConfirmTradeResponse')),
+                  Visibility(
+                      visible: _isProcessing,
+                      child: const LinearProgressIndicator()),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 16,
+              ),
+              Text(_tianyuLogs),
+            ],
+          ),
         ),
       ),
     );
@@ -348,7 +356,7 @@ class _MyAppState extends State<MyApp> {
 
     try {
       await _flutterTianyuPlugin.readCardWithTradeData(
-          amount: 5, showPinInputStatus: showPinInput);
+          amount: 5000000, showPinInputStatus: showPinInput);
 
       if (mounted) {
         setState(() {
@@ -472,7 +480,7 @@ class _MyAppState extends State<MyApp> {
     FlutterBluePlus.stopScan();
   }
 
-  void _displayTextOnScreen() async{
+  void _displayTextOnScreen() async {
     final cek = await _flutterTianyuPlugin.isConnected();
     if (!cek) {
       await _connectTianyuDevice();
@@ -494,14 +502,32 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _getDeviceInfo() async  {
-
+  void _getDeviceInfo() async {
     String version = await _flutterTianyuPlugin.getDeviceInfo();
     print(version);
     if (mounted) {
       setState(() {
         _isProcessing = false;
         _tianyuLogs += "\nVersion: $version";
+      });
+    }
+  }
+
+  Future _confirmTradeResponse() async {
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+    if (mounted) {
+      setState(() {
+        _isProcessing = true;
+        _tianyuLogs += "\nConfirm Trade Response";
+      });
+    }
+    _flutterTianyuPlugin.confirmTradeResponse(str: "Transaction Approved");
+    if (mounted) {
+      setState(() {
+        _isProcessing = false;
       });
     }
   }
