@@ -202,6 +202,11 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 deviceApi.setUpdateType(call.arguments as Byte)
                 result.success(true)
             }
+            "getPinBlock" -> {
+                val r: Map<String, String> = deviceApi.getEncPinblock("", 0x00,true)
+                val pin: String? = r.get("pin")
+                result.success(pin)
+            }
 
 
 

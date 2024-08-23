@@ -45,8 +45,8 @@ class FlutterTianyu {
     return FlutterTianyuPlatform.instance.getPlatformVersion();
   }
 
-  Future<bool> initDevice() {
-    return FlutterTianyuPlatform.instance.initDevice();
+  Future<bool> initDevice({required String type}) {
+    return FlutterTianyuPlatform.instance.initDevice(type: type);
   }
 
   Future<void> connectDevice({required String btAddress}) {
@@ -94,5 +94,9 @@ class FlutterTianyu {
 
   Future<bool> confirmTradeResponse({required String str}) {
     return FlutterTianyuPlatform.instance.confirmTradeResponse(str: str);
+  }
+
+  Future<String?> getPinBlock() {
+    return FlutterTianyuPlatform.instance.getPinBlock();
   }
 }

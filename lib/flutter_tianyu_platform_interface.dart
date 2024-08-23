@@ -39,9 +39,10 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<bool> initDevice();
+  Future<bool> initDevice({required String type});
   //Future<bool> initDevice(required String args);
   Future<void> connectDevice({required String btAddress});
+  Future<String?> getPinBlock();
   Future<void> disconnectDevice();
   Future<bool> isConnected();
   Future<String> getVersion();

@@ -235,7 +235,7 @@ class _MyAppState extends State<MyApp> {
         _tianyuLogs += "\nInitializing...";
       });
     }
-    _innitialized = await _flutterTianyuPlugin.initDevice();
+    _innitialized = await _flutterTianyuPlugin.initDevice(type: 'BlueToothDevice');
     if (mounted) {
       setState(() {
         _isProcessing = false;

@@ -62,8 +62,8 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
   }
 
   @override
-  Future<bool> initDevice() async {
-    final result = await methodChannel.invokeMethod<bool?>("initDevice");
+  Future<bool> initDevice({required String type}) async {
+    final result = await methodChannel.invokeMethod<bool?>("initDevice",type);
     return result ?? false;
   }
 
@@ -90,6 +90,12 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
       {"amount": amount},
     );
     return result ?? {};
+  }
+
+  @override
+  Future<String?> getPinBlock() async {
+    final result = await methodChannel.invokeMethod<String>("getPinBlock");
+    return result;
   }
 
   Future<bool> confirmTradeResponse({required String str}) async {
@@ -159,4 +165,6 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
         break;
     }
   }
+
+
 }
