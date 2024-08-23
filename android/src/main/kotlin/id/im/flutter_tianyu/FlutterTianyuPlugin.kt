@@ -136,7 +136,6 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     "yyyyMMddHHmmss", Locale.getDefault()
                 )
                 val terminalTime = format.format(Date())
-
                 val r: Map<String, String> = deviceApi.readCardWithTradeData(
                     "$amount",
                     terminalTime.substring(2),
@@ -147,11 +146,28 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     null,
                     0x07.toByte()
                 )
-
                 result.success(r)
-
-
             }
+
+            "readCard" -> {
+
+                val args = call.arguments as Map<*, *>
+                val amount: Int = (args["amount"] as Int?) ?: 0
+                val format = SimpleDateFormat(
+                    "yyyyMMddHHmmss", Locale.getDefault()
+                )
+
+                val terminalTime = format.format(Date())
+                val r: Map<String, String> = deviceApi.readCard(
+                    "$amount",
+                    terminalTime.substring(2),
+                    0x00.toByte(),
+                    0x10.toByte(),
+                )
+                result.success(r)
+            }
+
+
 
             "confirmTransaction" -> {
                 val b = deviceApi.confirmTransaction(call.arguments as String)
@@ -181,6 +197,13 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 deviceApi.confirmTradeResponse(call.arguments as String)
                 result.success(true)
             }
+
+            "setUpdateType" -> {
+                deviceApi.setUpdateType(call.arguments as Byte)
+                result.success(true)
+            }
+
+
 
             else -> {
                 result.notImplemented()
