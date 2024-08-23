@@ -26,6 +26,8 @@ class _MyAppState extends State<MyApp> {
   String _tianyuLogs = "";
   bool _isProcessing = false;
   String btAddress = "";
+  String bluetoothDevice ="BlueToothDevice";
+  String USBDevice = "USBDevice";
 
   late final FlutterTianyu _flutterTianyuPlugin;
 
@@ -167,9 +169,9 @@ class _MyAppState extends State<MyApp> {
                       Text('Running on: $_platformVersion\n'),
                     ],
                   ),
-                  ElevatedButton(
-                      onPressed: _searchBluetoothDevice,
-                      child: const Text("Scan Device")),
+                  // ElevatedButton(
+                  //     onPressed: _searchBluetoothDevice,
+                  //     child: const Text("Scan Device")),
                   ElevatedButton(
                       onPressed: _connectTianyuDevice,
                       child: const Text("Connect Tianyu device")),
@@ -177,7 +179,8 @@ class _MyAppState extends State<MyApp> {
                       onPressed: _disconnectDevice,
                       child: const Text("Disconnect Tianyu device")),
                   ElevatedButton(
-                      onPressed: _readCard, child: const Text("Read card")),
+                      onPressed: _readCardWithData,
+                      child: const Text("Read card with data")),
                   ElevatedButton(
                       onPressed: _cancelTransaction,
                       child: const Text('Cancel Transaction')),
@@ -186,15 +189,18 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('Confirm Transaction')),
                   ElevatedButton(
                       onPressed: _clearLogs, child: const Text('Clear logs')),
-                  ElevatedButton(
-                      onPressed: _displayTextOnScreen,
-                      child: const Text('Display text on screen')),
+                  // ElevatedButton(
+                  //     onPressed: _displayTextOnScreen,
+                  //     child: const Text('Display text on screen')),
                   ElevatedButton(
                       onPressed: _getDeviceInfo,
                       child: const Text('GetDeviceVerion')),
                   ElevatedButton(
                       onPressed: _confirmTradeResponse,
                       child: const Text('ConfirmTradeResponse')),
+                  ElevatedButton(
+                      onPressed: _readCard, child: const Text('ReadCard')),
+
                   Visibility(
                       visible: _isProcessing,
                       child: const LinearProgressIndicator()),
@@ -340,7 +346,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future _readCard() async {
+  Future _readCardWithData() async {
     bool showPinInput = false;
     final cek = await _flutterTianyuPlugin.isConnected();
     if (!cek) {
@@ -369,6 +375,47 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           _tianyuLogs += "\nRead Card Failed";
           print(_tianyuLogs);
+        });
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _isProcessing = false;
+      });
+    }
+  }
+
+  Future _readCard() async {
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+
+    if (mounted) {
+      setState(() {
+        _isProcessing = true;
+        _tianyuLogs += "\nReading...";
+      });
+    }
+
+    try {
+      await _flutterTianyuPlugin.readCard(
+        amount: 99000,
+      );
+
+      if (mounted) {
+        setState(() {
+          _tianyuLogs += "\nRead Card Success";
+          print(_tianyuLogs);
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _tianyuLogs += "\nRead Card Failed$e";
+          print(_tianyuLogs);
+
         });
       }
     }
@@ -480,27 +527,27 @@ class _MyAppState extends State<MyApp> {
     FlutterBluePlus.stopScan();
   }
 
-  void _displayTextOnScreen() async {
-    final cek = await _flutterTianyuPlugin.isConnected();
-    if (!cek) {
-      await _connectTianyuDevice();
-    }
-
-    if (mounted) {
-      setState(() {
-        _isProcessing = true;
-        _tianyuLogs += "\nTest Display Text On Screen";
-      });
-    }
-    await _flutterTianyuPlugin.displayTextOnScreen(str: "hello");
-    if (mounted) {
-      setState(() {
-        _isProcessing = false;
-      });
-
-      return;
-    }
-  }
+  // void _displayTextOnScreen() async {
+  //   final cek = await _flutterTianyuPlugin.isConnected();
+  //   if (!cek) {
+  //     await _connectTianyuDevice();
+  //   }
+  //
+  //   if (mounted) {
+  //     setState(() {
+  //       _isProcessing = true;
+  //       _tianyuLogs += "\nTest Display Text On Screen";
+  //     });
+  //   }
+  //   await _flutterTianyuPlugin.displayTextOnScreen(str: "hello");
+  //   if (mounted) {
+  //     setState(() {
+  //       _isProcessing = false;
+  //     });
+  //
+  //     return;
+  //   }
+  // }
 
   void _getDeviceInfo() async {
     String version = await _flutterTianyuPlugin.getDeviceInfo();
