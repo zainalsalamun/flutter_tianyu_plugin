@@ -79,6 +79,10 @@ class FlutterTianyu {
         amount: amount, showPinInputStatus: showPinInputStatus);
   }
 
+  Future<Map<Object?, Object?>> readCard({required int amount}) {
+    return FlutterTianyuPlatform.instance.readCard(amount: amount);
+  }
+
   Future<bool> confirmTransaction({String str = "Transaction Approved"}) {
     return FlutterTianyuPlatform.instance.confirmTransaction(str: str);
   }

@@ -40,6 +40,7 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
   }
 
   Future<bool> initDevice();
+  //Future<bool> initDevice(required String args);
   Future<void> connectDevice({required String btAddress});
   Future<void> disconnectDevice();
   Future<bool> isConnected();
@@ -48,6 +49,7 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
   Future<void> cancel();
   Future<Map<Object?, Object?>> readCardWithTradeData(
       {required int amount, bool showPinInputStatus});
+  Future<Map<Object?, Object?>> readCard({required int amount});
   Future<bool> confirmTransaction({String str = "Transaction Approved"});
   Future<bool> displayTextOnScreen(
       {String str = "Test Display Text On Screen"});

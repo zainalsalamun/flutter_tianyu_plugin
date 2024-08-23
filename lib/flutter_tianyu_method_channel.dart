@@ -83,10 +83,19 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
     return result ?? {};
   }
 
+  @override
+  Future<Map<Object?, Object?>> readCard({required int amount}) async {
+    final result = await methodChannel.invokeMethod<Map<Object?, Object?>?>(
+      "readCard",
+      {"amount": amount},
+    );
+    return result ?? {};
+  }
+
   Future<bool> confirmTradeResponse({required String str}) async {
     final result =
         await methodChannel.invokeMethod<String>("confirmTradeResponse", str);
-    return  result == "true" ? true : false;
+    return result == "true" ? true : false;
   }
 
   Future<dynamic> _methodCallHandler(MethodCall call) async {
