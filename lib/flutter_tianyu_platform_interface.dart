@@ -43,8 +43,8 @@ abstract class FlutterTianyuPlatform extends PlatformInterface {
   //Future<bool> initDevice(required String args);
   Future<void> connectDevice({required String btAddress});
   Future<String?> getPinBlock();
-  Future<Map<String,String>?> decryptData({required String data});
-  Future<Map<String,String>?> encryptData({required String data});
+  Future<Map<Object?, Object?>> decryptData({required String data});
+  Future<Map<Object?, Object?>> encryptData({required String data});
   Future<void> disconnectDevice();
   Future<bool> isConnected();
   Future<String> getVersion();

@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   String _tianyuLogs = "";
   bool _isProcessing = false;
   String btAddress = "";
-  String bluetoothDevice ="BlueToothDevice";
+  String bluetoothDevice = "BlueToothDevice";
   String USBDevice = "USBDevice";
 
   late final FlutterTianyu _flutterTianyuPlugin;
@@ -160,7 +160,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Tianyu Plugin app'),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -205,9 +205,11 @@ class _MyAppState extends State<MyApp> {
                   ElevatedButton(
                       onPressed: _readCard, child: const Text('ReadCard')),
                   ElevatedButton(
-                      onPressed: _decryptData, child: const Text('Decrypt Data')),
+                      onPressed: _decryptData,
+                      child: const Text('Decrypt Data')),
                   ElevatedButton(
-                      onPressed: _encryptData, child: const Text('EncryptData')),
+                      onPressed: _encryptData,
+                      child: const Text('EncryptData')),
 
                   Visibility(
                       visible: _isProcessing,
@@ -243,7 +245,8 @@ class _MyAppState extends State<MyApp> {
         _tianyuLogs += "\nInitializing...";
       });
     }
-    _innitialized = await _flutterTianyuPlugin.initDevice(type: 'BlueToothDevice');
+    _innitialized =
+        await _flutterTianyuPlugin.initDevice(type: 'BlueToothDevice');
     if (mounted) {
       setState(() {
         _isProcessing = false;
@@ -363,32 +366,29 @@ class _MyAppState extends State<MyApp> {
     if (mounted) {
       setState(() {
         _isProcessing = true;
-        _tianyuLogs += "\n"+data["encTrack2Ex"].toString();
+        _tianyuLogs += "\n${data["encTrack2Ex"]}";
         _tianyuLogs += "\nReading...";
       });
     }
 
-    try{
-
-      await _flutterTianyuPlugin.decryptData(data: data["encTrack2Ex"].toString());
+    try {
+      var r = await _flutterTianyuPlugin.decryptData(
+          data: data["encTrack2Ex"].toString());
       if (mounted) {
         setState(() {
-
+          _tianyuLogs += "$r\n";
           _tianyuLogs += "\nDecrypt Success";
           print(_tianyuLogs);
-
         });
       }
-
-    } catch (e){
+    } catch (e) {
       if (mounted) {
         setState(() {
-          _tianyuLogs += "\n"+e.toString();
+          _tianyuLogs += "\n$e";
           _tianyuLogs += "\nDecrypt Failed";
           print(_tianyuLogs);
         });
       }
-
     }
   }
 
@@ -404,27 +404,23 @@ class _MyAppState extends State<MyApp> {
         _tianyuLogs += "\nReading...";
       });
     }
-    try{
-      if(data != null){
+    try {
+      if (data != null) {
         await _flutterTianyuPlugin.encryptData(data: "123456789");
         if (mounted) {
           setState(() {
-
             _tianyuLogs += "\nEncrypt Success";
             print(_tianyuLogs);
-
           });
         }
       }
-
-    } catch (e){
+    } catch (e) {
       if (mounted) {
         setState(() {
           _tianyuLogs += "\nEncrypt Failed";
           print(_tianyuLogs);
         });
       }
-
     }
   }
 
@@ -446,24 +442,21 @@ class _MyAppState extends State<MyApp> {
       var result = await _flutterTianyuPlugin.readCardWithTradeData(
           amount: 50000, showPinInputStatus: showPinInput);
 
-
       Map<String, String>? stringMap = result.map((key, value) {
         if (key is String && value is String) {
-          return MapEntry(key, value); // Hanya mengembalikan pasangan (key, value) jika keduanya String
+          return MapEntry(key,
+              value); // Hanya mengembalikan pasangan (key, value) jika keduanya String
         } else {
-          return MapEntry(key.toString(), value.toString()); // Konversi key dan value ke String jika bukan
+          return MapEntry(key.toString(),
+              value.toString()); // Konversi key dan value ke String jika bukan
         }
-
-
       });
       data = stringMap;
 
       if (mounted) {
         setState(() {
-
           _tianyuLogs += "\nRead Card Success";
           print(_tianyuLogs);
-
         });
       }
     } catch (e) {
@@ -511,7 +504,6 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           _tianyuLogs += "\nRead Card Failed$e";
           print(_tianyuLogs);
-
         });
       }
     }
@@ -585,7 +577,7 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    await FlutterBluePlus.startScan(timeout: Duration(seconds: 10));
+    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
 
     await FlutterBluePlus.stopScan();
 
@@ -617,9 +609,9 @@ class _MyAppState extends State<MyApp> {
       });
     });
 
-    FlutterBluePlus.startScan(timeout: Duration(seconds: 10));
+    FlutterBluePlus.startScan(timeout: const Duration(seconds: 10));
 
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 10));
 
     FlutterBluePlus.stopScan();
   }
@@ -675,6 +667,4 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
-
-
 }

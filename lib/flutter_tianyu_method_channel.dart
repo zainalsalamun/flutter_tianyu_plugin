@@ -63,7 +63,7 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
 
   @override
   Future<bool> initDevice({required String type}) async {
-    final result = await methodChannel.invokeMethod<bool?>("initDevice",type);
+    final result = await methodChannel.invokeMethod<bool?>("initDevice", type);
     return result ?? false;
   }
 
@@ -105,15 +105,16 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
   }
 
   @override
-  Future<Map<String, String>?> decryptData({required String data}) async{
-    final result = await methodChannel.invokeMethod<Map<String, String>>("decryptData",data);
+  Future<Map<Object?, Object?>> decryptData({required String data}) async {
+    final result = await methodChannel.invokeMethod<Map<Object?, Object?>>(
+        "decryptData", data);
     return result ?? {};
-
   }
 
   @override
-  Future<Map<String, String>?> encryptData({required String data}) async{
-    final result = await methodChannel.invokeMethod<Map<String, String>>("encryptData",data);
+  Future<Map<Object?, Object?>> encryptData({required String data}) async {
+    final result = await methodChannel.invokeMethod<Map<Object?, Object?>>(
+        "encryptData", data);
     return result ?? {};
   }
 
@@ -178,8 +179,4 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
         break;
     }
   }
-
-
-
-
 }
