@@ -1,9 +1,12 @@
 package id.im.flutter_tianyu
 
 import android.app.Activity
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.whty.device.utils.GPMethods
+import com.whty.tymposapi.Constant
 import com.whty.tymposapi.DeviceApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -175,7 +178,7 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
 
             "getPlatformVersion" -> {
-                result.success("Android ${android.os.Build.VERSION.RELEASE}")
+                result.success("Android ${Build.VERSION.RELEASE}")
             }
 
             "displayTextOnScreen" -> {
@@ -206,6 +209,14 @@ class FlutterTianyuPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val r: Map<String, String> = deviceApi.getEncPinblock("", 0x00,true)
                 val pin: String? = r.get("pin")
                 result.success(pin)
+            }
+            "decryptData" -> {
+                val r = deviceApi.encryptData(Constant.WorkingKey.TDK, Constant.EncryptMode.DECRYPT,GPMethods.str2bytes(call.arguments as String))
+                result.success(r)
+            }
+            "encryptData" -> {
+                val r = deviceApi.encryptData(Constant.WorkingKey.TDK, Constant.EncryptMode.ENCRYPT,GPMethods.str2bytes(call.arguments as String))
+                result.success(r)
             }
 
 
