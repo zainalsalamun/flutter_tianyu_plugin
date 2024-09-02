@@ -77,7 +77,7 @@ class MockFlutterTianyuPlatform
       }
     
       @override
-      Future<bool> initDevice() {
+      Future<bool> initDevice({required String type}) {
     // TODO: implement initDevice
     throw UnimplementedError();
       }
@@ -93,6 +93,48 @@ class MockFlutterTianyuPlatform
     // TODO: implement readCardWithTradeData
     throw UnimplementedError();
       }
+
+  @override
+  Future<bool> confirmTradeResponse({required String str}) {
+    // TODO: implement confirmTradeResponse
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> displayTextOnScreen({String str = "Test Display Text On Screen"}) {
+    // TODO: implement displayTextOnScreen
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getDeviceInfo() {
+    // TODO: implement getDeviceInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, String>> decryptData({required String data}) {
+    // TODO: implement decryptData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, String>> encryptData({required String data}) {
+    // TODO: implement encryptData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getPinBlock() {
+    // TODO: implement getPinBlock
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<Object?, Object?>> readCard({required int amount}) {
+    // TODO: implement readCard
+    throw UnimplementedError();
+  }
      
   
 }

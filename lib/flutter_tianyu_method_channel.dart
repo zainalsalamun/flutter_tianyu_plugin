@@ -104,6 +104,19 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
     return result == "true" ? true : false;
   }
 
+  @override
+  Future<Map<String, String>?> decryptData({required String data}) async{
+    final result = await methodChannel.invokeMethod<Map<String, String>>("decryptData",data);
+    return result ?? {};
+
+  }
+
+  @override
+  Future<Map<String, String>?> encryptData({required String data}) async{
+    final result = await methodChannel.invokeMethod<Map<String, String>>("encryptData",data);
+    return result ?? {};
+  }
+
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     switch (call.method) {
       case "onConnectedDevice":
@@ -165,6 +178,8 @@ class MethodChannelFlutterTianyu extends FlutterTianyuPlatform {
         break;
     }
   }
+
+
 
 
 }

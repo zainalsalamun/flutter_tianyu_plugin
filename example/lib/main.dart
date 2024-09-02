@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -41,6 +43,8 @@ class _MyAppState extends State<MyApp> {
   String get tianyuLogs => _tianyuLogs;
 
   List<BluetoothDevice> _devicesList = [];
+
+  var data;
 
   @override
   void initState() {
@@ -200,6 +204,10 @@ class _MyAppState extends State<MyApp> {
                       child: const Text('ConfirmTradeResponse')),
                   ElevatedButton(
                       onPressed: _readCard, child: const Text('ReadCard')),
+                  ElevatedButton(
+                      onPressed: _decryptData, child: const Text('Decrypt Data')),
+                  ElevatedButton(
+                      onPressed: _encryptData, child: const Text('EncryptData')),
 
                   Visibility(
                       visible: _isProcessing,
@@ -346,6 +354,80 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future _decryptData() async {
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+
+    if (mounted) {
+      setState(() {
+        _isProcessing = true;
+        _tianyuLogs += "\n"+data["encTrack2Ex"].toString();
+        _tianyuLogs += "\nReading...";
+      });
+    }
+
+    try{
+
+      await _flutterTianyuPlugin.decryptData(data: data["encTrack2Ex"].toString());
+      if (mounted) {
+        setState(() {
+
+          _tianyuLogs += "\nDecrypt Success";
+          print(_tianyuLogs);
+
+        });
+      }
+
+    } catch (e){
+      if (mounted) {
+        setState(() {
+          _tianyuLogs += "\n"+e.toString();
+          _tianyuLogs += "\nDecrypt Failed";
+          print(_tianyuLogs);
+        });
+      }
+
+    }
+  }
+
+  Future _encryptData() async {
+    final cek = await _flutterTianyuPlugin.isConnected();
+    if (!cek) {
+      await _connectTianyuDevice();
+    }
+
+    if (mounted) {
+      setState(() {
+        _isProcessing = true;
+        _tianyuLogs += "\nReading...";
+      });
+    }
+    try{
+      if(data != null){
+        await _flutterTianyuPlugin.encryptData(data: "123456789");
+        if (mounted) {
+          setState(() {
+
+            _tianyuLogs += "\nEncrypt Success";
+            print(_tianyuLogs);
+
+          });
+        }
+      }
+
+    } catch (e){
+      if (mounted) {
+        setState(() {
+          _tianyuLogs += "\nEncrypt Failed";
+          print(_tianyuLogs);
+        });
+      }
+
+    }
+  }
+
   Future _readCardWithData() async {
     bool showPinInput = false;
     final cek = await _flutterTianyuPlugin.isConnected();
@@ -361,13 +443,27 @@ class _MyAppState extends State<MyApp> {
     }
 
     try {
-      await _flutterTianyuPlugin.readCardWithTradeData(
-          amount: 5000000, showPinInputStatus: showPinInput);
+      var result = await _flutterTianyuPlugin.readCardWithTradeData(
+          amount: 50000, showPinInputStatus: showPinInput);
+
+
+      Map<String, String>? stringMap = result.map((key, value) {
+        if (key is String && value is String) {
+          return MapEntry(key, value); // Hanya mengembalikan pasangan (key, value) jika keduanya String
+        } else {
+          return MapEntry(key.toString(), value.toString()); // Konversi key dan value ke String jika bukan
+        }
+
+
+      });
+      data = stringMap;
 
       if (mounted) {
         setState(() {
+
           _tianyuLogs += "\nRead Card Success";
           print(_tianyuLogs);
+
         });
       }
     } catch (e) {
@@ -449,6 +545,7 @@ class _MyAppState extends State<MyApp> {
   void _clearLogs() {
     setState(() {
       _tianyuLogs = "";
+      data = null;
     });
   }
 
@@ -578,4 +675,6 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
+
+
 }

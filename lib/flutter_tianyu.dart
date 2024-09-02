@@ -99,4 +99,12 @@ class FlutterTianyu {
   Future<String?> getPinBlock() {
     return FlutterTianyuPlatform.instance.getPinBlock();
   }
+
+  Future<Map<String, String>?> decryptData({required String data}){
+    return FlutterTianyuPlatform.instance.decryptData(data: data);
+  }
+
+  Future<Map<String, String>?> encryptData({required String data}){
+    return FlutterTianyuPlatform.instance.encryptData(data: data);
+  }
 }
